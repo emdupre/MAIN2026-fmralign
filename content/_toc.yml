@@ -1,8 +1,6 @@
 format: jb-book
-root: 01-data-structures
+root: 00-index
 chapters:
-- file: 02-classification-example
-- file: 03-cross-validation
-- file: 04-statistical-analysis
-- file: 05-glm-for-decoding
-- file: 06-alignment-inter-subject
+- file: 01-data-structures
+- file: 02-pairwise-alignment
+- file: 03-template-alignment
