@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>An introduction to nilearn &#8212; NHA2026: ML for Neuroimaging</title>
+    <title>An introduction to nilearn &#8212; MAIN Educational 2026: fmralign</title>
   
   
   
@@ -62,7 +62,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '01-data-structures';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="An example classification problem" href="02-classification-example.html" />
+    <link rel="next" title="Pairwise functional alignment with fmralign" href="02-pairwise-alignment.html" />
+    <link rel="prev" title="Functional alignment of fMRI data with fmralign" href="00-index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -125,8 +126,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -145,7 +144,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="00-index.html">
   
   
   
@@ -156,8 +155,8 @@
       
     
     
-    <img src="_static/nilearn-logo.png" class="logo__image only-light" alt="NHA2026: ML for Neuroimaging - Home"/>
-    <script>document.write(`<img src="_static/nilearn-logo.png" class="logo__image only-dark" alt="NHA2026: ML for Neuroimaging - Home"/>`);</script>
+    <img src="_static/fmralign-logo.svg" class="logo__image only-light" alt="MAIN Educational 2026: fmralign - Home"/>
+    <script>document.write(`<img src="_static/fmralign-logo.svg" class="logo__image only-dark" alt="MAIN Educational 2026: fmralign - Home"/>`);</script>
   
   
 </a></div>
@@ -176,18 +175,16 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
-                    An introduction to nilearn
+            <li class="toctree-l1">
+                <a class="reference internal" href="00-index.html">
+                    Functional alignment of fMRI data with fmralign
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="02-classification-example.html">An example classification problem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-cross-validation.html">Evaluating our machine learning models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-statistical-analysis.html">Statistical analysis in <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-glm-for-decoding.html">Putting it together: General Linear Models for Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-alignment-inter-subject.html">Generalizability across subjects : Functional alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></a></li>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">An introduction to <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-pairwise-alignment.html">Pairwise functional alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-template-alignment.html">Generating and using functional templates</a></li>
 </ul>
 
     </div>
@@ -242,7 +239,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/emdupre/nha-ml-nimg/main?urlpath=tree/content/01-data-structures.md" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/emdupre/MAIN2026-fmralign/main?urlpath=tree/content/01-data-structures.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -254,24 +251,6 @@
     <img alt="Binder logo" src="_static/images/logo_binder.svg">
   </span>
 <span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://neurohackademy.2i2c.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/emdupre/nha-ml-nimg&urlpath=tree/nha-ml-nimg/content/01-data-structures.md&branch=main" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch on JupyterHub"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img alt="JupyterHub logo" src="_static/images/logo_jupyterhub.svg">
-  </span>
-<span class="btn__text-container">JupyterHub</span>
 </a>
 </li>
       
@@ -710,7 +689,7 @@ Because MSDL is a probabilistic atlas, we can view it using:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x14e805bb0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x169684350&gt;
 </pre></div>
 </div>
 <img alt="_images/e8d7724dbb509114231b0609f0f63fd08be69dbaec6f5b5db6c21d7c8964324a.png" src="_images/e8d7724dbb509114231b0609f0f63fd08be69dbaec6f5b5db6c21d7c8964324a.png" />
@@ -816,7 +795,7 @@ We can estimate it using <a class="reference external" href="https://nilearn.git
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x16bf8a210&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x327ec3290&gt;
 </pre></div>
 </div>
 <img alt="_images/78a3be05160611a0b5285253b240b00af05650c6304b85d89e4c67dc7b04019e.png" src="_images/78a3be05160611a0b5285253b240b00af05650c6304b85d89e4c67dc7b04019e.png" />
@@ -1394,7 +1373,7 @@ For your own analyses, make sure to check which confounds you’re using!</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x16bf75340&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x351af0b60&gt;
 </pre></div>
 </div>
 <img alt="_images/4cefa3bcde0034f6d478c045f3f37ab60a92586bf0f4eba61ba9bf2c25a93b30.png" src="_images/4cefa3bcde0034f6d478c045f3f37ab60a92586bf0f4eba61ba9bf2c25a93b30.png" />
@@ -1816,8 +1795,6 @@ Otherwise, you might be classifying participants on e.g. amount of head motion r
 </dl>
 </div>
 </section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1850,12 +1827,21 @@ Otherwise, you might be classifying participants on e.g. amount of head motion r
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="00-index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Functional alignment of fMRI data with fmralign</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="02-classification-example.html"
+       href="02-pairwise-alignment.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">An example classification problem</p>
+        <p class="prev-next-title">Pairwise functional alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
