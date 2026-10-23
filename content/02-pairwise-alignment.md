@@ -41,7 +41,7 @@ We download the images for six of the subjects:
 ```{code-cell} ipython3
 from fmralign.fetch_example_data import fetch_ibc_subjects_contrasts
 
-subjects = ["sub-01", "sub-02", "sub-04", "sub-05", "sub-06", "sub-07"]
+subjects = ["sub-01", "sub-02", "sub-04"]
 imgs, df, mask = fetch_ibc_subjects_contrasts(subjects)
 ```
 First, let's define a region of interest (ROI) ; we will use the visual network of Yeo 2011 {cite}`Yeo2011-pl`.
@@ -192,31 +192,6 @@ display.title("Similarity of source and predicted target test data (i.e., with a
 ```
 
 In this case, we see that Procrustes alignment significantly improved the correlation between our source subject, `sub-01`, and target subject, `sub-02` !
-
-## Template functional alignment
-
-What if we have more than two subjects ?
-One option is to iteratively align all subjects to a given target subject, but this can be slow and difficult to interpret.
-In these cases, we can also consider using "template" functional alignment.
-This involves first learning a latent functional template using the training data for our source subjects.
-
-```{figure} ../images/template_learning.png
----
-height: 350px
-name: template-learning
----
-An overview of learning functional templates for the majority of functional alignment methods.
-Note that the Shared Response Model (SRM) proceeds differently, as it involves a decomposition.
-```
-
-Formally, this template can be learned using variational inference:
-
-$$
-  \mathbf{F}^T \in \arg \min_{\mathbf{F} \in \mathbb{R}^{n \times p}} \sum_{s=1}^S ||\mathbf{F}^s\mathbf{P}^s  - \mathbf{F}||^2_F
-$$
-
-Once the template has been learned, we can use it in exactly the same framework as above, substituting $\mathbf{F}^T$ for $\mathbf{F}^t$.
-To see a compairison of different functional alignment methods with the `GroupAlignment` estimator in `fmralign`, check out [this example](https://fmralign.github.io/fmralign/auto_examples/plot_alignment_methods_benchmark.html).
 
 ```{bibliography} references.bib
 :style: unsrt
