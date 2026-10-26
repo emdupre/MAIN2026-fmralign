@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Pairwise functional alignment with `fmralign`
+# Pairwise Functional Alignment with `fmralign`
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -26,7 +26,7 @@ import os
 os.environ["NILEARN_SHARED_DATA"] = "~/shared/data/nilearn_data"
 ```
 
-In neuroimaging data, _functional alignment_ is a family of techniques which aim to do exactly this by increasing the similarity of subject-level functional data.
+In neuroimaging data, _functional alignment_ is a family of techniques which aim to improve the generalizability of our results by increasing the similarity of subject-level functional data.
 Starting with the introduction of _hyperalignment_ {cite}`10.7554/eLife.56601`, functional alignment has evolved to include a range of methods such as Procrustes, Optimal Transport, and the Shared Response Model.
 
 In this example we will showcase one of these methods, Procrustes alignment, using the Individual Brain Charting (IBC) {cite}`Pinho2018-dm` dataset, which include a large number of different contrasts maps for 12 subjects. 
@@ -47,7 +47,7 @@ For example, Procrustes alignment assumes that $\mathbf{P}$ is a rotation matrix
 
 $$
   \min_{\mathbf{P}=s\mathbf{M}} ||\mathbf{F}^s\mathbf{P}  - \mathbf{F}^t||^2_F, s \in \mathbb{R}^{+}, \mathbf{M} \in \mathbb{R}^{p \times p}, \mathbf{M}^T\mathbf{M} = \mathbf{I}_p
-$$
+$$(procrustes)
 
 ## Fetch tutorial data
 
@@ -110,21 +110,24 @@ target_test_imgs = concat_imgs(
 
 ## Define region of interest (ROI)
 
-Next, let's define a region of interest (ROI) ; we will use the visual network of Yeo 2011 {cite}`Yeo2011-pl`.
+Next, let's define a region of interest (ROI) ; we will use visual regions as defined in the Juelich Atlas.
 We will resample this region of interest to be in the same space as our IBC subjects and then define a masker with this resampled ROI.
 
 ```{code-cell} ipython3
+import numpy as np
 from nilearn import datasets
 from nilearn.maskers import MultiNiftiMasker
 from nilearn.image import load_img, new_img_like, resample_to_img
 from nilearn.plotting import plot_roi
 
-atlas_yeo_2011 = datasets.fetch_atlas_yeo_2011()
-atlas = load_img(atlas_yeo_2011.maps)
+atlas_juelich = datasets.fetch_atlas_juelich(atlas_name="maxprob-thr50-2mm")
+atlas = load_img(atlas_juelich.maps)
 
 # Select visual cortex, create a mask and resample it to the right resolution
-
-mask_visual = new_img_like(atlas, atlas.get_fdata() == 1)
+mask_visual = new_img_like(
+    atlas,
+    np.logical_and((atlas.get_fdata() > 47), (atlas.get_fdata() <= 53))
+)
 resampled_mask_visual = resample_to_img(
     mask_visual, mask, interpolation="nearest"
 )
@@ -135,14 +138,17 @@ plot_roi(
     resampled_mask_visual,
     title="Visual regions mask extracted from atlas",
     cut_coords=(8, -80, 9),
-    colorbar=True,
-    cmap="Paired",
+    colorbar=False,
+    cmap="gist_ncar",
 )
 ```
 
+## Learn the alignment
 
 As mentioned previously, many different methods are available for functional alignment.
 In this tutorial, we will use Procrustes, which is very fast to compute.
+The formalism for Procrustes is available in {eq}`procrustes`.
+
 Calling different functional alignment methods in `fmralign` is as simple as changing the `method` argument in [the `PairwiseAlignment` estimator](https://fmralign.github.io/fmralign/modules/generated/fmralign.alignment.pairwise_alignment.PairwiseAlignment.html#fmralign.alignment.pairwise_alignment.PairwiseAlignment). 
 
 ```{code-cell} ipython3
@@ -166,6 +172,8 @@ alignment_estimator = PairwiseAlignment(method="procrustes")
 alignment_estimator.fit(source_train_data, target_train_data)
 target_pred_data = alignment_estimator.transform(source_test_data)
 ```
+
+## Visualize resulting voxelwise scores
 
 Now we can assess how well we did. Since we don't have a clear predictive or statistical learning task here on which to measure performance, we will instead assess how close the values in our `target_pred_data` are to the ground truth `target_test_data` using the `score_voxelwise` method.
 

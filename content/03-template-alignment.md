@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Generating and using functional templates
+# Generating and Using Functional Templates
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -104,20 +104,22 @@ target_test_img = concat_imgs(
 
 ## Define neighborhoods for alignment
 
-
 ```{code-cell} ipython3
 # define region-of-interest (ROI)
+import numpy as np
 from nilearn import datasets
 from nilearn.maskers import MultiNiftiMasker
 from nilearn.image import load_img, new_img_like, resample_to_img
 from nilearn.plotting import plot_roi
 
-atlas_yeo_2011 = datasets.fetch_atlas_yeo_2011()
-atlas = load_img(atlas_yeo_2011.maps)
+atlas_juelich = datasets.fetch_atlas_juelich(atlas_name="maxprob-thr50-2mm")
+atlas = load_img(atlas_juelich.maps)
 
 # Select visual cortex, create a mask and resample it to the right resolution
-
-mask_visual = new_img_like(atlas, atlas.get_fdata() == 1)
+mask_visual = new_img_like(
+    atlas,
+    np.logical_and((atlas.get_fdata() > 47), (atlas.get_fdata() <= 53))
+)
 resampled_mask_visual = resample_to_img(
     mask_visual, mask, interpolation="nearest"
 )
@@ -128,8 +130,8 @@ plot_roi(
     resampled_mask_visual,
     title="Visual regions mask extracted from atlas",
     cut_coords=(8, -80, 9),
-    colorbar=True,
-    cmap="Paired",
+    colorbar=False,
+    cmap="gist_ncar",
 )
 ```
 
@@ -137,8 +139,6 @@ Rather than learning a single alignment for the entire ROI, we will cluster the 
 This will help to reduce our computational cost.
 
 ```{code-cell} ipython3
-import numpy as np
-
 n_voxels = roi_masker.n_elements_
 print(f"The chosen region of interest contains {n_voxels} voxels")
 n_pieces = int(np.round(n_voxels / 100))
@@ -169,7 +169,6 @@ dict_source_test = dict(
 target_train = roi_masker.transform(target_train_img)
 target_test = roi_masker.transform(target_test_img)
 ```
-
 
 ## Learn template and use in target alignment
 
@@ -216,6 +215,20 @@ plt.show()
 
 Now, we follow the same procedure but vary the alignment method. 
 
+Here, we will use Procrustes alignments as well as the Shared Response Model (SRM). 
+We have already introduced Procrustes alignment {eq}`procrustes` in the Pairwise alignment notebook.
+The SRM is somewhat different than previously introduced methods as it can only be used for group alignments, as it defines a shared basis set across multiple subjects, and then projects a new subject into this shared basis.
+An illustration of the procedure is included below.
+
+```{figure} ../images/SRM.png
+---
+height: 350px
+name: SRM
+---
+An overview of Shared Response Modelling (SRM).
+Figure from {cite}`cohen2017computational`.
+```
+
 ```{code-cell} ipython3
 
 methods = ["procrustes", "SRM"]
@@ -242,6 +255,8 @@ for method in methods:
     titles.append(f"Correlation of prediction after {method} alignment")
     aligned_scores.append(aligned_score_img)
 ```
+
+## Visualize the voxelwise scores
 
 Finally, we plot the results for each of the alignment methods:
 

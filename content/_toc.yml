@@ -4,3 +4,4 @@ chapters:
 - file: 01-data-structures
 - file: 02-pairwise-alignment
 - file: 03-template-alignment
+- file: 04-simulation-decoding
