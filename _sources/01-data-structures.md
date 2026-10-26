@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# An introduction to [`nilearn`](http://nilearn.github.io)
+# An Introduction to [`nilearn`](http://nilearn.github.io)
 
 ```{code-cell} ipython3
 :tags: [hide-cell]

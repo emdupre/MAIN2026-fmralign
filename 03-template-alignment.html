@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Generating and using functional templates &#8212; MAIN Educational 2026: fmralign</title>
+    <title>Generating and Using Functional Templates &#8212; MAIN Educational 2026: fmralign</title>
   
   
   
@@ -64,7 +64,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03-template-alignment';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Pairwise functional alignment with fmralign" href="02-pairwise-alignment.html" />
+    <link rel="next" title="Improving Inter-Subject Decoding" href="04-simulation-decoding.html" />
+    <link rel="prev" title="Pairwise Functional Alignment with fmralign" href="02-pairwise-alignment.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,9 +184,10 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01-data-structures.html">An introduction to <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="02-pairwise-alignment.html">Pairwise functional alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generating and using functional templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01-data-structures.html">An Introduction to <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-pairwise-alignment.html">Pairwise Functional Alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generating and Using Functional Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-simulation-decoding.html">Improving Inter-Subject Decoding</a></li>
 </ul>
 
     </div>
@@ -372,7 +374,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Generating and using functional templates</h1>
+    <h1>Generating and Using Functional Templates</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -387,6 +389,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-neighborhoods-for-alignment">Define neighborhoods for alignment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-template-and-use-in-target-alignment">Learn template and use in target alignment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-functional-alignment-methods">Comparing functional alignment methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-voxelwise-scores">Visualize the voxelwise scores</a></li>
 </ul>
             </nav>
         </div>
@@ -399,7 +402,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="generating-and-using-functional-templates">
-<h1>Generating and using functional templates<a class="headerlink" href="#generating-and-using-functional-templates" title="Permalink to this heading">#</a></h1>
+<h1>Generating and Using Functional Templates<a class="headerlink" href="#generating-and-using-functional-templates" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -514,17 +517,20 @@ Note that we know have two “source” or training subjects.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define region-of-interest (ROI)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.maskers</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiNiftiMasker</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_img</span><span class="p">,</span> <span class="n">new_img_like</span><span class="p">,</span> <span class="n">resample_to_img</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_roi</span>
 
-<span class="n">atlas_yeo_2011</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_atlas_yeo_2011</span><span class="p">()</span>
-<span class="n">atlas</span> <span class="o">=</span> <span class="n">load_img</span><span class="p">(</span><span class="n">atlas_yeo_2011</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+<span class="n">atlas_juelich</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_atlas_juelich</span><span class="p">(</span><span class="n">atlas_name</span><span class="o">=</span><span class="s2">&quot;maxprob-thr50-2mm&quot;</span><span class="p">)</span>
+<span class="n">atlas</span> <span class="o">=</span> <span class="n">load_img</span><span class="p">(</span><span class="n">atlas_juelich</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
 
 <span class="c1"># Select visual cortex, create a mask and resample it to the right resolution</span>
-
-<span class="n">mask_visual</span> <span class="o">=</span> <span class="n">new_img_like</span><span class="p">(</span><span class="n">atlas</span><span class="p">,</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">mask_visual</span> <span class="o">=</span> <span class="n">new_img_like</span><span class="p">(</span>
+    <span class="n">atlas</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">((</span><span class="n">atlas</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">47</span><span class="p">),</span> <span class="p">(</span><span class="n">atlas</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">53</span><span class="p">))</span>
+<span class="p">)</span>
 <span class="n">resampled_mask_visual</span> <span class="o">=</span> <span class="n">resample_to_img</span><span class="p">(</span>
     <span class="n">mask_visual</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
 <span class="p">)</span>
@@ -535,28 +541,26 @@ Note that we know have two “source” or training subjects.</p>
     <span class="n">resampled_mask_visual</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Visual regions mask extracted from atlas&quot;</span><span class="p">,</span>
     <span class="n">cut_coords</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
-    <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Paired&quot;</span><span class="p">,</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gist_ncar&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080; text-decoration-color: #000080; font-weight: bold">[</span><span style="color: #000080; text-decoration-color: #000080">fetch_atlas_yeo_2011</span><span style="color: #000080; text-decoration-color: #000080; font-weight: bold">]</span> Dataset directory found: <span style="color: #800080; text-decoration-color: #800080">/Users/emdupre/nilearn_data/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">yeo_2011</span>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #000080; text-decoration-color: #000080; font-weight: bold">[</span><span style="color: #000080; text-decoration-color: #000080">fetch_atlas_juelich</span><span style="color: #000080; text-decoration-color: #000080; font-weight: bold">]</span> Dataset directory found: <span style="color: #800080; text-decoration-color: #800080">/Users/emdupre/nilearn_data/</span><span style="color: #ff00ff; text-decoration-color: #ff00ff">fsl</span>
 </pre>
-</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x33683bfb0&gt;
+</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x32dc24740&gt;
 </pre></div>
 </div>
-<img alt="_images/0c9a12fbd442ddf8e4f2db01f25cbf8b306861e8a9176997aaa17b8340cecd5b.png" src="_images/0c9a12fbd442ddf8e4f2db01f25cbf8b306861e8a9176997aaa17b8340cecd5b.png" />
+<img alt="_images/296589622515d62d5b605dee8ff007aee1f006826ef14b8f430dfe033f1d000a.png" src="_images/296589622515d62d5b605dee8ff007aee1f006826ef14b8f430dfe033f1d000a.png" />
 </div>
 </div>
 <p>Rather than learning a single alignment for the entire ROI, we will cluster the ROI to learn multiple alignments, one for each cluster.
 This will help to reduce our computational cost.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">n_voxels</span> <span class="o">=</span> <span class="n">roi_masker</span><span class="o">.</span><span class="n">n_elements_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_voxels</span> <span class="o">=</span> <span class="n">roi_masker</span><span class="o">.</span><span class="n">n_elements_</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The chosen region of interest contains </span><span class="si">{</span><span class="n">n_voxels</span><span class="si">}</span><span class="s2"> voxels&quot;</span><span class="p">)</span>
 <span class="n">n_pieces</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">n_voxels</span> <span class="o">/</span> <span class="mi">100</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;We will cluster them in </span><span class="si">{</span><span class="n">n_pieces</span><span class="si">}</span><span class="s2"> regions&quot;</span><span class="p">)</span>
@@ -564,8 +568,8 @@ This will help to reduce our computational cost.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The chosen region of interest contains 6631 voxels
-We will cluster them in 66 regions
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The chosen region of interest contains 1793 voxels
+We will cluster them in 18 regions
 </pre></div>
 </div>
 </div>
@@ -640,13 +644,24 @@ This will be the baseline against which we compare our functional alignment meth
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c8797c16606c208a13d1072e9bcbd560b8545dec0cfeeb693d385f2295ecad5b.png" src="_images/c8797c16606c208a13d1072e9bcbd560b8545dec0cfeeb693d385f2295ecad5b.png" />
+<img alt="_images/0fe474018e7fca3fef6faaaaab9927c481f72e5402e5f3ea122ccd8b8ac2e2c5.png" src="_images/0fe474018e7fca3fef6faaaaab9927c481f72e5402e5f3ea122ccd8b8ac2e2c5.png" />
 </div>
 </div>
 </section>
 <section id="comparing-functional-alignment-methods">
 <h2>Comparing functional alignment methods<a class="headerlink" href="#comparing-functional-alignment-methods" title="Permalink to this heading">#</a></h2>
 <p>Now, we follow the same procedure but vary the alignment method.</p>
+<p>Here, we will use Procrustes alignments as well as the Shared Response Model (SRM).
+We have already introduced Procrustes alignment <a class="reference internal" href="02-pairwise-alignment.html#equation-procrustes">(1)</a> in the Pairwise alignment notebook.
+The SRM is somewhat different than previously introduced methods as it can only be used for group alignments, as it defines a shared basis set across multiple subjects, and then projects a new subject into this shared basis.
+An illustration of the procedure is included below.</p>
+<figure class="align-default" id="srm">
+<a class="reference internal image-reference" href="_images/SRM.png"><img alt="_images/SRM.png" src="_images/SRM.png" style="height: 350px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">An overview of Shared Response Modelling (SRM).
+Figure from <span id="id1">[<a class="reference internal" href="#id3" title="Jonathan D Cohen, Nathaniel Daw, Barbara Engelhardt, Uri Hasson, Kai Li, Yael Niv, Kenneth A Norman, Jonathan Pillow, Peter J Ramadge, Nicholas B Turk-Browne, and others. Computational approaches to fmri analysis. Nature neuroscience, 20(3):304–313, 2017.">1</a>]</span>.</span><a class="headerlink" href="#srm" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;procrustes&quot;</span><span class="p">,</span> <span class="s2">&quot;SRM&quot;</span><span class="p">]</span>
@@ -676,6 +691,9 @@ This will be the baseline against which we compare our functional alignment meth
 </div>
 </div>
 </div>
+</section>
+<section id="visualize-the-voxelwise-scores">
+<h2>Visualize the voxelwise scores<a class="headerlink" href="#visualize-the-voxelwise-scores" title="Permalink to this heading">#</a></h2>
 <p>Finally, we plot the results for each of the alignment methods:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -699,10 +717,17 @@ This will be the baseline against which we compare our functional alignment meth
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ab09df524789034ba09d7e08dd6142fa68407df71257b2e308c0408024e17739.png" src="_images/ab09df524789034ba09d7e08dd6142fa68407df71257b2e308c0408024e17739.png" />
+<img alt="_images/bd1a5d7d80b051473bd5ea7ead36a43c0fa108e435c5a2658a9cc19afb7d07d4.png" src="_images/bd1a5d7d80b051473bd5ea7ead36a43c0fa108e435c5a2658a9cc19afb7d07d4.png" />
 </div>
 </div>
-<span class="target" id="id1"></span></section>
+<div class="docutils container" id="id2">
+<dl class="citation">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Jonathan D Cohen, Nathaniel Daw, Barbara Engelhardt, Uri Hasson, Kai Li, Yael Niv, Kenneth A Norman, Jonathan Pillow, Peter J Ramadge, Nicholas B Turk-Browne, and others. Computational approaches to fmri analysis. <em>Nature neuroscience</em>, 20(3):304–313, 2017.</p>
+</dd>
+</dl>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -741,8 +766,17 @@ This will be the baseline against which we compare our functional alignment meth
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Pairwise functional alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></p>
+        <p class="prev-next-title">Pairwise Functional Alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></p>
       </div>
+    </a>
+    <a class="right-next"
+       href="04-simulation-decoding.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Improving Inter-Subject Decoding</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -765,6 +799,7 @@ This will be the baseline against which we compare our functional alignment meth
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-neighborhoods-for-alignment">Define neighborhoods for alignment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-template-and-use-in-target-alignment">Learn template and use in target alignment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-functional-alignment-methods">Comparing functional alignment methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-voxelwise-scores">Visualize the voxelwise scores</a></li>
 </ul>
   </nav></div>
 
