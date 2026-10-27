@@ -1,0 +1,778 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Pairwise Functional Alignment with fmralign &#8212; MAIN Educational 2026: fmralign</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02-pairwise-alignment';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Generating and Using Functional Templates" href="03-template-alignment.html" />
+    <link rel="prev" title="An Introduction to nilearn" href="01-data-structures.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00-index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/fmralign-logo.svg" class="logo__image only-light" alt="MAIN Educational 2026: fmralign - Home"/>
+    <script>document.write(`<img src="_static/fmralign-logo.svg" class="logo__image only-dark" alt="MAIN Educational 2026: fmralign - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00-index.html">
+                    Functional alignment of fMRI data with fmralign
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-data-structures.html">An Introduction to <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pairwise Functional Alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-template-alignment.html">Generating and Using Functional Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-simulation-decoding.html">Improving Inter-Subject Decoding</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/emdupre/MAIN2026-fmralign/main?urlpath=tree/content/02-pairwise-alignment.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/02-pairwise-alignment.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="_sources/02-pairwise-alignment.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pairwise Functional Alignment with fmralign</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-functional-alignment">Pairwise functional alignment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch-tutorial-data">Fetch tutorial data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-region-of-interest-roi">Define region of interest (ROI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-the-alignment">Learn the alignment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-resulting-voxelwise-scores">Visualize resulting voxelwise scores</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pairwise-functional-alignment-with-fmralign">
+<h1>Pairwise Functional Alignment with <code class="docutils literal notranslate"><span class="pre">fmralign</span></code><a class="headerlink" href="#pairwise-functional-alignment-with-fmralign" title="Permalink to this heading">#</a></h1>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;NILEARN_SHARED_DATA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;~/shared/data/nilearn_data&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>In neuroimaging data, <em>functional alignment</em> is a family of techniques which aim to improve the generalizability of our results by increasing the similarity of subject-level functional data.
+Starting with the introduction of <em>hyperalignment</em> <span id="id1">[<a class="reference internal" href="#id7" title="James V Haxby, J Swaroop Guntupalli, Samuel A Nastase, and Ma Feilong. Hyperalignment: modeling shared information encoded in idiosyncratic cortical topographies. eLife, 9:e56601, jun 2020. URL: https://doi.org/10.7554/eLife.56601, doi:10.7554/eLife.56601.">1</a>]</span>, functional alignment has evolved to include a range of methods such as Procrustes, Optimal Transport, and the Shared Response Model.</p>
+<p>In this example we will showcase one of these methods, Procrustes alignment, using the Individual Brain Charting (IBC) <span id="id2">[<a class="reference internal" href="#id6" title="Ana Luísa Pinho, Alexis Amadon, Torsten Ruest, Murielle Fabre, Elvis Dohmatob, Isabelle Denghien, Chantal Ginisty, Séverine Becuwe-Desmidt, Séverine Roger, Laurence Laurier, Véronique Joly-Testault, Gaëlle Médiouni-Cloarec, Christine Doublé, Bernadette Martins, Philippe Pinel, Evelyn Eger, Gaël Varoquaux, Christophe Pallier, Stanislas Dehaene, Lucie Hertz-Pannier, and Bertrand Thirion. Individual brain charting, a high-resolution fMRI dataset for cognitive mapping. Sci Data, 5:180105, June 2018.">2</a>]</span> dataset, which include a large number of different contrasts maps for 12 subjects.</p>
+<section id="pairwise-functional-alignment">
+<h2>Pairwise functional alignment<a class="headerlink" href="#pairwise-functional-alignment" title="Permalink to this heading">#</a></h2>
+<p>The first way in which we can use functional alignment is to improve similarity between two datasets, also known as “pairwise” functional alignment.</p>
+<p>Formally, our goal is to find a minimal transformation <span class="math notranslate nohighlight">\(P\)</span> from a source subject <span class="math notranslate nohighlight">\(s\)</span> to a target subject <span class="math notranslate nohighlight">\(t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+  \min_{\mathbf{P}} ||\mathbf{F}^s\mathbf{P}  - \mathbf{F}^t||^2_F
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{F}^s\)</span> is a <span class="math notranslate nohighlight">\(n\)</span> features ✕ <span class="math notranslate nohighlight">\(p\)</span> voxels  matrix and <span class="math notranslate nohighlight">\(||.||_F\)</span> denotes the Frobenius norm over matrices.
+Each functional alignment methods puts different, additional constraints on the form of <span class="math notranslate nohighlight">\(\mathbf{P}\)</span>.
+For example, Procrustes alignment assumes that <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> is a rotation matrix, mapping many-to-many voxels:</p>
+<div class="math notranslate nohighlight" id="equation-procrustes">
+<span class="eqno">(1)<a class="headerlink" href="#equation-procrustes" title="Permalink to this equation">#</a></span>\[
+  \min_{\mathbf{P}=s\mathbf{M}} ||\mathbf{F}^s\mathbf{P}  - \mathbf{F}^t||^2_F, s \in \mathbb{R}^{+}, \mathbf{M} \in \mathbb{R}^{p \times p}, \mathbf{M}^T\mathbf{M} = \mathbf{I}_p
+\]</div>
+</section>
+<section id="fetch-tutorial-data">
+<h2>Fetch tutorial data<a class="headerlink" href="#fetch-tutorial-data" title="Permalink to this heading">#</a></h2>
+<p>We download the data for three of the IBC subjects:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">imgs</span></code> is the list of paths for each subjects</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">df</span></code> is a dataframe with metadata about each of subject</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask</span></code> is agroup-level brain mask for IBC data</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fmralign.fetch_example_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_ibc_subjects_contrasts</span>
+
+<span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sub-01&quot;</span><span class="p">,</span> <span class="s2">&quot;sub-02&quot;</span><span class="p">,</span> <span class="s2">&quot;sub-04&quot;</span><span class="p">]</span>
+<span class="n">imgs</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">fetch_ibc_subjects_contrasts</span><span class="p">(</span><span class="n">subjects</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[get_dataset_dir] Dataset directory found: /Users/emdupre/nilearn_data/ibc
+</pre></div>
+</div>
+</div>
+</div>
+<p>This dataset includes contrasts derived from two independent sessions, each with a different phase encoding: Antero-Posterior (AP) or Postero-Anterior (PA).
+We will therefore use the different phase encodings to define a unique
+“train” (AP) and “test” (PA) datasets.
+Then, within each of our training and testing datasets, we will take the first two IBC subjects, <code class="docutils literal notranslate"><span class="pre">sub-01</span></code> and <code class="docutils literal notranslate"><span class="pre">sub-02</span></code>, as our source and target subjects.</p>
+<p>Within the training dataset, we will learn a transformation between the source and target subject.
+We can then use the same transformation in the testing dataset to assess how well we improved similarity betweeh these two subjects.</p>
+<figure class="align-default" id="pairwise-alignment">
+<a class="reference internal image-reference" href="_images/pairwise_alignment.png"><img alt="_images/pairwise_alignment.png" src="_images/pairwise_alignment.png" style="height: 350px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">An overview of pairwise functional alignment.</span><a class="headerlink" href="#pairwise-alignment" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The training fold, used to learn alignment from source subject toward target:</span>
+<span class="c1"># * source train: AP contrasts for subject sub-01</span>
+<span class="c1"># * target train: AP contrasts for subject sub-02</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">concat_imgs</span>
+
+<span class="n">source_train_imgs</span> <span class="o">=</span> <span class="n">concat_imgs</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s2">&quot;sub-01&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">acquisition</span> <span class="o">==</span> <span class="s2">&quot;ap&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">values</span>
+<span class="p">)</span>
+<span class="n">target_train_imgs</span> <span class="o">=</span> <span class="n">concat_imgs</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s2">&quot;sub-02&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">acquisition</span> <span class="o">==</span> <span class="s2">&quot;ap&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">values</span>
+<span class="p">)</span>
+
+<span class="c1"># The testing fold:</span>
+<span class="c1"># * source test: PA contrasts for subject sub-01, used to predict</span>
+<span class="c1">#   the corresponding contrasts of subject sub-02</span>
+<span class="c1"># * target test: PA contrasts for subject sub-02, used as a ground truth</span>
+<span class="c1">#   to score our predictions</span>
+
+<span class="n">source_test_imgs</span> <span class="o">=</span> <span class="n">concat_imgs</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s2">&quot;sub-01&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">acquisition</span> <span class="o">==</span> <span class="s2">&quot;pa&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">values</span>
+<span class="p">)</span>
+<span class="n">target_test_imgs</span> <span class="o">=</span> <span class="n">concat_imgs</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s2">&quot;sub-02&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">acquisition</span> <span class="o">==</span> <span class="s2">&quot;pa&quot;</span><span class="p">)]</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">values</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-region-of-interest-roi">
+<h2>Define region of interest (ROI)<a class="headerlink" href="#define-region-of-interest-roi" title="Permalink to this heading">#</a></h2>
+<p>Next, let’s define a region of interest (ROI) ; we will use visual regions as defined in the Juelich Atlas.
+We will resample this region of interest to be in the same space as our IBC subjects and then define a masker with this resampled ROI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.maskers</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiNiftiMasker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_img</span><span class="p">,</span> <span class="n">new_img_like</span><span class="p">,</span> <span class="n">resample_to_img</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nilearn.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_roi</span>
+
+<span class="n">atlas_juelich</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_atlas_juelich</span><span class="p">(</span><span class="n">atlas_name</span><span class="o">=</span><span class="s2">&quot;maxprob-thr50-2mm&quot;</span><span class="p">)</span>
+<span class="n">atlas</span> <span class="o">=</span> <span class="n">load_img</span><span class="p">(</span><span class="n">atlas_juelich</span><span class="o">.</span><span class="n">maps</span><span class="p">)</span>
+
+<span class="c1"># Select visual cortex, create a mask and resample it to the right resolution</span>
+<span class="n">mask_visual</span> <span class="o">=</span> <span class="n">new_img_like</span><span class="p">(</span>
+    <span class="n">atlas</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">((</span><span class="n">atlas</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">47</span><span class="p">),</span> <span class="p">(</span><span class="n">atlas</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">53</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">resampled_mask_visual</span> <span class="o">=</span> <span class="n">resample_to_img</span><span class="p">(</span>
+    <span class="n">mask_visual</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+<span class="p">)</span>
+<span class="n">roi_masker</span> <span class="o">=</span> <span class="n">MultiNiftiMasker</span><span class="p">(</span><span class="n">mask_img</span><span class="o">=</span><span class="n">resampled_mask_visual</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Plot the mask we will use</span>
+<span class="n">plot_roi</span><span class="p">(</span>
+    <span class="n">resampled_mask_visual</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Visual regions mask extracted from atlas&quot;</span><span class="p">,</span>
+    <span class="n">cut_coords</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">80</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gist_ncar&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[fetch_atlas_juelich] Dataset directory found: /Users/emdupre/nilearn_data/fsl
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;nilearn.plotting.displays._slicers.OrthoSlicer at 0x15eefbbf0&gt;
+</pre></div>
+</div>
+<img alt="_images/f72f6f3e9766ab2c7e6b8d1e40f8180ef2c68b22f13ad0a894202d73781ecaa3.png" src="_images/f72f6f3e9766ab2c7e6b8d1e40f8180ef2c68b22f13ad0a894202d73781ecaa3.png" />
+</div>
+</div>
+</section>
+<section id="learn-the-alignment">
+<h2>Learn the alignment<a class="headerlink" href="#learn-the-alignment" title="Permalink to this heading">#</a></h2>
+<p>As mentioned previously, many different methods are available for functional alignment.
+In this tutorial, we will use Procrustes, which is very fast to compute.
+The formalism for Procrustes is available in <a class="reference internal" href="#equation-procrustes">(1)</a>.</p>
+<p>Calling different functional alignment methods in <code class="docutils literal notranslate"><span class="pre">fmralign</span></code> is as simple as changing the <code class="docutils literal notranslate"><span class="pre">method</span></code> argument in <a class="reference external" href="https://fmralign.github.io/fmralign/modules/generated/fmralign.alignment.pairwise_alignment.PairwiseAlignment.html#fmralign.alignment.pairwise_alignment.PairwiseAlignment">the <code class="docutils literal notranslate"><span class="pre">PairwiseAlignment</span></code> estimator</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fmralign</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAlignment</span>
+
+<span class="p">(</span>
+    <span class="n">source_train_data</span><span class="p">,</span>
+    <span class="n">target_train_data</span><span class="p">,</span>
+    <span class="n">source_test_data</span><span class="p">,</span>
+    <span class="n">target_test_data</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">=</span> <span class="n">roi_masker</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">source_train_imgs</span><span class="p">,</span>
+        <span class="n">target_train_imgs</span><span class="p">,</span>
+        <span class="n">source_test_imgs</span><span class="p">,</span>
+        <span class="n">target_test_imgs</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">alignment_estimator</span> <span class="o">=</span> <span class="n">PairwiseAlignment</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;procrustes&quot;</span><span class="p">)</span>
+<span class="n">alignment_estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">source_train_data</span><span class="p">,</span> <span class="n">target_train_data</span><span class="p">)</span>
+<span class="n">target_pred_data</span> <span class="o">=</span> <span class="n">alignment_estimator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">source_test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-resulting-voxelwise-scores">
+<h2>Visualize resulting voxelwise scores<a class="headerlink" href="#visualize-resulting-voxelwise-scores" title="Permalink to this heading">#</a></h2>
+<p>Now we can assess how well we did. Since we don’t have a clear predictive or statistical learning task here on which to measure performance, we will instead assess how close the values in our <code class="docutils literal notranslate"><span class="pre">target_pred_data</span></code> are to the ground truth <code class="docutils literal notranslate"><span class="pre">target_test_data</span></code> using the <code class="docutils literal notranslate"><span class="pre">score_voxelwise</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nilearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">plotting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fmralign.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">score_voxelwise</span>
+
+<span class="c1"># Now we use this scoring function to compare the correlation of aligned and</span>
+<span class="c1"># original data from sub-01 made with the real PA contrasts of sub-02.</span>
+
+<span class="n">baseline_score</span> <span class="o">=</span> <span class="n">score_voxelwise</span><span class="p">(</span>
+    <span class="n">target_test_data</span><span class="p">,</span> <span class="n">source_test_data</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;corr&quot;</span>
+<span class="p">)</span>
+<span class="n">aligned_score</span> <span class="o">=</span> <span class="n">score_voxelwise</span><span class="p">(</span>
+    <span class="n">target_test_data</span><span class="p">,</span> <span class="n">target_pred_data</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;corr&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># And plot the results</span>
+<span class="n">baseline_score_img</span> <span class="o">=</span> <span class="n">roi_masker</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">baseline_score</span><span class="p">)</span>
+<span class="n">aligned_score_img</span> <span class="o">=</span> <span class="n">roi_masker</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">aligned_score</span><span class="p">)</span>
+<span class="n">baseline_display</span> <span class="o">=</span> <span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+    <span class="n">baseline_score_img</span><span class="p">,</span> <span class="n">display_mode</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cut_coords</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">baseline_display</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Similarity of source and target test data, no alignment&quot;</span><span class="p">)</span>
+<span class="n">display</span> <span class="o">=</span> <span class="n">plotting</span><span class="o">.</span><span class="n">plot_stat_map</span><span class="p">(</span>
+    <span class="n">aligned_score_img</span><span class="p">,</span> <span class="n">display_mode</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">cut_coords</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Similarity of source and predicted target test data (i.e., with alignment)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/274e5c60c81a20b39da387891833c68143e199db53136162bde26e787de88448.png" src="_images/274e5c60c81a20b39da387891833c68143e199db53136162bde26e787de88448.png" />
+<img alt="_images/fc77afea11103737b27c3c2ff97ab72f7a6183092a3309f3e262f2788326092e.png" src="_images/fc77afea11103737b27c3c2ff97ab72f7a6183092a3309f3e262f2788326092e.png" />
+</div>
+</div>
+<p>In this case, we see that Procrustes alignment significantly improved the correlation between our source subject, <code class="docutils literal notranslate"><span class="pre">sub-01</span></code>, and target subject, <code class="docutils literal notranslate"><span class="pre">sub-02</span></code> !</p>
+<div class="docutils container" id="id3">
+<dl class="citation">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>James V Haxby, J Swaroop Guntupalli, Samuel A Nastase, and Ma Feilong. Hyperalignment: modeling shared information encoded in idiosyncratic cortical topographies. <em>eLife</em>, 9:e56601, jun 2020. URL: <a class="reference external" href="https://doi.org/10.7554/eLife.56601">https://doi.org/10.7554/eLife.56601</a>, <a class="reference external" href="https://doi.org/10.7554/eLife.56601">doi:10.7554/eLife.56601</a>.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Ana Luísa Pinho, Alexis Amadon, Torsten Ruest, Murielle Fabre, Elvis Dohmatob, Isabelle Denghien, Chantal Ginisty, Séverine Becuwe-Desmidt, Séverine Roger, Laurence Laurier, Véronique Joly-Testault, Gaëlle Médiouni-Cloarec, Christine Doublé, Bernadette Martins, Philippe Pinel, Evelyn Eger, Gaël Varoquaux, Christophe Pallier, Stanislas Dehaene, Lucie Hertz-Pannier, and Bertrand Thirion. Individual brain charting, a high-resolution fMRI dataset for cognitive mapping. <em>Sci Data</em>, 5:180105, June 2018.</p>
+</dd>
+</dl>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-data-structures.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">An Introduction to <code class="docutils literal notranslate"><span class="pre">nilearn</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-template-alignment.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Generating and Using Functional Templates</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pairwise-functional-alignment">Pairwise functional alignment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch-tutorial-data">Fetch tutorial data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-region-of-interest-roi">Define region of interest (ROI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn-the-alignment">Learn the alignment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-resulting-voxelwise-scores">Visualize resulting voxelwise scores</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Elizabeth DuPre
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

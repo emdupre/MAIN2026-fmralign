@@ -386,7 +386,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-two-subjects-with-a-shared-latent-signal">Simulating two subjects with a shared latent signal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-the-ground-truth-spatial-patterns">Comparing the ground-truth spatial patterns</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-across-subjects-without-alignment">Decoding across subjects without alignment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aligning-subjects-before-decoding">Aligning subjects before decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aligning-subjects-before-decoding">Aligning subjects before decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-alignment">Ridge alignment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-transport">Optimal transport</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-of-the-number-of-alignment-samples-and-snr">Influence of the number of alignment samples and SNR</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
 </ul>
@@ -408,7 +412,7 @@ that is, our ability to learn one decoding model on source subject(s) and genera
 In this simulated dataset, two subjects share the same underlying cognitive signal, but this signal is expressed through subject-specific spatial patterns, and is corrupted by independent, spatially smooth noise.
 This mimics how the same mental process can produce different topographies across individuals in fMRI data, such that a decoder trained on raw voxels does not transfer across subjects.</p>
 <p>We compare a classifier trained directly on the source subject to classifiers trained after aligning the source onto the target with <code class="docutils literal notranslate"><span class="pre">PairwiseAlignment</span></code>, using the Procrustes, Optimal Transport, and Ridge alignment methods.
-This notebook is taked from the <a class="reference external" href="https://fmralign.github.io/fmralign/auto_examples/plot_decoding_simulation.html">fmralign documentation</a>.</p>
+This notebook is taken from the <a class="reference external" href="https://fmralign.github.io/fmralign/auto_examples/plot_decoding_simulation.html">fmralign documentation</a>.</p>
 <section id="simulating-two-subjects-with-a-shared-latent-signal">
 <h2>Simulating two subjects with a shared latent signal<a class="headerlink" href="#simulating-two-subjects-with-a-shared-latent-signal" title="Permalink to this heading">#</a></h2>
 <p>Both subjects observe the same latent variables, but each subject projects them onto its own spatial patterns and adds its own independent, spatially smooth noise.
@@ -601,7 +605,34 @@ Naive SVM score on target: 0.25
 <section id="aligning-subjects-before-decoding">
 <h2>Aligning subjects before decoding<a class="headerlink" href="#aligning-subjects-before-decoding" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">PairwiseAlignment</span></code> learns a transformation from the source to the target subject on a separate set of alignment samples.
-Applying this transformation to the source subject’s training data before fitting the decoder recovers spatial weights that better match the target subject, for each of the three alignment methods.</p>
+Applying this transformation to the source subject’s training data before fitting the decoder recovers spatial weights that better match the target subject, for each of the three alignment methods:</p>
+<ul class="simple">
+<li><p>Procrustes <a class="reference internal" href="02-pairwise-alignment.html#equation-procrustes">(1)</a> alignment</p></li>
+<li><p>Optimal Transport alignment</p></li>
+<li><p>Ridge alignment</p></li>
+</ul>
+<p>We previously introduced Procrustes alignment, but we will briefly explain Optimal Transport and Ridge before continuing.</p>
+<section id="ridge-alignment">
+<h3>Ridge alignment<a class="headerlink" href="#ridge-alignment" title="Permalink to this heading">#</a></h3>
+<p>Ridge Alignment introduces a penalty <span class="math notranslate nohighlight">\(\alpha\)</span> on the mixing matrix, where the optimal alpha is found via cross-validation:</p>
+<div class="math notranslate nohighlight" id="equation-ridges">
+<span class="eqno">(2)<a class="headerlink" href="#equation-ridges" title="Permalink to this equation">#</a></span>\[
+  ||\mathbf{F}^s\mathbf{M}  - \mathbf{F}^t||^2 + \alpha * ||\mathbf{M}||^2
+\]</div>
+</section>
+<section id="optimal-transport">
+<h3>Optimal transport<a class="headerlink" href="#optimal-transport" title="Permalink to this heading">#</a></h3>
+<p>Optimal Transport can be first understood visually:</p>
+<figure class="align-default" id="pot">
+<img alt="_images/POT.png" src="_images/POT.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">An illustrative setting in which we can apply the optimal transport problem.
+We have a set number of cafés and bakeries, and we would like to transport baked goods from the sources (bakeries) and to the targets (cafés).
+Given the physical distance between each bakery and café, we can define a cost matrix based on distance required to transport baked goods.</span><a class="headerlink" href="#pot" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The exact form of the solution depends on the regularization used.
+In <code class="docutils literal notranslate"><span class="pre">fmralign</span></code>, we support Optimal Transport implementations in <a class="reference external" href="https://www.kernel-operations.io/geomloss/"><code class="docutils literal notranslate"><span class="pre">geomloss</span></code></a> and in <a class="reference external" href="https://pythonot.github.io"><code class="docutils literal notranslate"><span class="pre">POT</span></code></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fmralign</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAlignment</span>
@@ -640,6 +671,7 @@ SVM aligned with ridge target score: 0.54
 <img alt="_images/c20ba8f5d7dff2ebab704b6e54a0d841e4eb1cea93896b6c4cde01966a5144f7.png" src="_images/c20ba8f5d7dff2ebab704b6e54a0d841e4eb1cea93896b6c4cde01966a5144f7.png" />
 </div>
 </div>
+</section>
 </section>
 <section id="influence-of-the-number-of-alignment-samples-and-snr">
 <h2>Influence of the number of alignment samples and SNR<a class="headerlink" href="#influence-of-the-number-of-alignment-samples-and-snr" title="Permalink to this heading">#</a></h2>
@@ -796,7 +828,11 @@ Consequently, it typically requires tens of thousands of alignment samples to be
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-two-subjects-with-a-shared-latent-signal">Simulating two subjects with a shared latent signal</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-the-ground-truth-spatial-patterns">Comparing the ground-truth spatial patterns</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decoding-across-subjects-without-alignment">Decoding across subjects without alignment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aligning-subjects-before-decoding">Aligning subjects before decoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aligning-subjects-before-decoding">Aligning subjects before decoding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge-alignment">Ridge alignment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-transport">Optimal transport</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#influence-of-the-number-of-alignment-samples-and-snr">Influence of the number of alignment samples and SNR</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
 </ul>
