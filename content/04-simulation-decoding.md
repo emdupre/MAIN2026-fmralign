@@ -21,7 +21,7 @@ In this simulated dataset, two subjects share the same underlying cognitive sign
 This mimics how the same mental process can produce different topographies across individuals in fMRI data, such that a decoder trained on raw voxels does not transfer across subjects.
 
 We compare a classifier trained directly on the source subject to classifiers trained after aligning the source onto the target with `PairwiseAlignment`, using the Procrustes, Optimal Transport, and Ridge alignment methods.
-This notebook is taked from the [fmralign documentation](https://fmralign.github.io/fmralign/auto_examples/plot_decoding_simulation.html).
+This notebook is taken from the [fmralign documentation](https://fmralign.github.io/fmralign/auto_examples/plot_decoding_simulation.html).
 
 ## Simulating two subjects with a shared latent signal
 
@@ -196,7 +196,36 @@ plot_patterns(
 ## Aligning subjects before decoding
 
 `PairwiseAlignment` learns a transformation from the source to the target subject on a separate set of alignment samples.
-Applying this transformation to the source subject’s training data before fitting the decoder recovers spatial weights that better match the target subject, for each of the three alignment methods.
+Applying this transformation to the source subject’s training data before fitting the decoder recovers spatial weights that better match the target subject, for each of the three alignment methods: 
+- Procrustes {eq}`procrustes` alignment
+- Optimal Transport alignment
+- Ridge alignment
+
+We previously introduced Procrustes alignment, but we will briefly explain Optimal Transport and Ridge before continuing. 
+
+### Ridge alignment
+
+Ridge Alignment introduces a penalty $\alpha$ on the mixing matrix, where the optimal alpha is found via cross-validation:
+
+$$
+  ||\mathbf{F}^s\mathbf{M}  - \mathbf{F}^t||^2 + \alpha * ||\mathbf{M}||^2
+$$(ridges)
+
+### Optimal transport
+Optimal Transport can be first understood visually:
+
+```{figure} ../images/POT.png
+---
+name: POT
+---
+An illustrative setting in which we can apply the optimal transport problem.
+We have a set number of cafés and bakeries, and we would like to transport baked goods from the sources (bakeries) and to the targets (cafés).
+Given the physical distance between each bakery and café, we can define a cost matrix based on distance required to transport baked goods. 
+```
+
+The exact form of the solution depends on the regularization used.
+In `fmralign`, we support Optimal Transport implementations in [`geomloss`](https://www.kernel-operations.io/geomloss/) and in [`POT`](https://pythonot.github.io). 
+
 
 ```{code-cell} ipython3
 from fmralign import PairwiseAlignment
