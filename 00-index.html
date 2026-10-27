@@ -233,11 +233,59 @@
 
 
 
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/emdupre/MAIN2026-fmralign/main?urlpath=tree/content/00-index.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
 <div class="dropdown dropdown-download-buttons">
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
     <i class="fas fa-download"></i>
   </button>
   <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/00-index.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
       
       
       
@@ -341,6 +389,26 @@ document.write(`
 <h1>Functional alignment of fMRI data with fmralign<a class="headerlink" href="#functional-alignment-of-fmri-data-with-fmralign" title="Permalink to this heading">#</a></h1>
 <p>Materials presented at the <a class="reference external" href="https://main-educational.github.io">2026 MAIN Educational</a> to introduce the software <code class="docutils literal notranslate"><span class="pre">fmralign</span></code> for aligning functional magnetic resonance imaging data (fMRI).</p>
 <p>No two brains are organized exactly alike, and anatomical registration alone does not bring functional responses into correspondence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">IFrame</span>
+
+<span class="n">IFrame</span><span class="p">(</span><span class="s2">&quot;https://docs.google.com/presentation/d/e/2PACX-1vSQyJnbhSdZTC9ZGYs93aTJo6ppLyNGQ4AXtCRFjUgPFpda1AO8Dm01ursEM5dFGev7227-zzYcE5aF/pubembed?start=false&amp;loop=false&amp;delayms=3000&quot;</span><span class="p">,</span> <span class="s2">&quot;480px&quot;</span><span class="p">,</span> <span class="s2">&quot;299px&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+        <iframe
+            width="480px"
+            height="299px"
+            src="https://docs.google.com/presentation/d/e/2PACX-1vSQyJnbhSdZTC9ZGYs93aTJo6ppLyNGQ4AXtCRFjUgPFpda1AO8Dm01ursEM5dFGev7227-zzYcE5aF/pubembed?start=false&loop=false&delayms=3000"
+            frameborder="0"
+            allowfullscreen
+            
+        ></iframe>
+        </div></div>
+</div>
 <p>In this hands-on tutorial, we introduce practical implementations of functional alignment using <code class="docutils literal notranslate"><span class="pre">fmralign</span></code>, a Python library in the <a class="reference external" href="https://scikit-learn.org/stable/"><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code></a> ecosystem to align brain activity across human participants, using methods such as Procrustes, Shared Response Modeling (SRM), and Optimal Transport.
 <code class="docutils literal notranslate"><span class="pre">fmralign</span></code> builds heavily on <a class="reference external" href="https://nilearn.github.io/stable/index.html"><code class="docutils literal notranslate"><span class="pre">nilearn</span></code></a> ; we therefore also spend some time introducing the <code class="docutils literal notranslate"><span class="pre">nilearn</span></code> library to handle fMRI data loading and feature extraction for alignment.</p>
 <div class="toctree-wrapper compound">
